@@ -19,14 +19,15 @@ public class CarEngine : MonoBehaviour {
     public bool isBraking = false;
 
     [Header("Sensors")]
-    public float sensorLength = 5f;
-    public float frontSensorPos = 0.5f;
+    private float sensorLength = 2f;
+    private Vector3 frontSensorPos = new Vector3(0.5f, 0.5f, 1f);
+    private float frontSideSensorPos = 0.5f;
 
 
     private List<Transform> nodes;
     private int correctNode = 0;
 
-    // Use this for initialization
+
     private void Start ()
     {
         Transform[] pathATransforms =startPath.GetComponentsInChildren<Transform>();
@@ -53,9 +54,10 @@ public class CarEngine : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
+
     private void FixedUpdate ()
     {
+        Sensors();
         if (isBraking == true)
         {
             wheelBL.brakeTorque = maxBrakeTorque;
@@ -63,7 +65,7 @@ public class CarEngine : MonoBehaviour {
         }
         else
         {
-            Sensors();
+            
             ApplySteer();
             Drive();
             CheckWaypointDistance();
@@ -73,15 +75,39 @@ public class CarEngine : MonoBehaviour {
     private void Sensors()
     {
         RaycastHit hit;
-        Vector3 sensorStartPos = transform.position;
-        sensorStartPos.z += frontSensorPos;
+        Vector3 sensorStartPos = transform.position + frontSensorPos;
 
+        //Front Center Sensor
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
         {
+            Debug.DrawLine(sensorStartPos, hit.point, Color.yellow);
             isBraking = true;
             StartCoroutine(StopSignWait());
+            //wheelBL.motorTorque = 0;
+            //wheelBR.motorTorque = 0;
         }
-        
+
+        //Front Right Sensor
+        sensorStartPos.x += frontSideSensorPos;
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
+        {
+            Debug.DrawLine(sensorStartPos, hit.point, Color.red);
+            isBraking = true;
+            StartCoroutine(StopSignWait());
+            //wheelBL.motorTorque = 0;
+            //wheelBR.motorTorque = 0;
+        }
+
+        //Front Left Sensor
+        sensorStartPos.x -= 2* frontSideSensorPos;
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
+        {
+            Debug.DrawLine(sensorStartPos, hit.point, Color.green);
+            isBraking = true;
+            StartCoroutine(StopSignWait());
+            //wheelBL.motorTorque = 0;
+            //wheelBR.motorTorque = 0;
+        }
     }
 
     private void ApplySteer()
@@ -114,7 +140,7 @@ public class CarEngine : MonoBehaviour {
         {
             if (correctNode == nodes.Count - 1)
             {
-                correctNode = 0;
+                isBraking = true;
             }
             else
             {

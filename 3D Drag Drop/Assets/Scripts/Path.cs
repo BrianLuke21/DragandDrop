@@ -47,7 +47,7 @@ public class Path : MonoBehaviour {
             }
             else if(i == 0 && nodes.Count > 1)
             {
-                previousNode = nodes[nodes.Count - 1].position;
+                previousNode = currentNode;
             }
 
             Gizmos.DrawLine(previousNode, currentNode);
