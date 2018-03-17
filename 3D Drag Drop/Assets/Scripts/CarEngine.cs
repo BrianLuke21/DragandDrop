@@ -57,15 +57,19 @@ public class CarEngine : MonoBehaviour {
 
     private void FixedUpdate ()
     {
-        Sensors();
+        //Sensors();
         if (isBraking == true)
         {
             wheelBL.brakeTorque = maxBrakeTorque;
             wheelBR.brakeTorque = maxBrakeTorque;
+            if (Mathf.Round(wheelBR.rpm) == 0)
+            {
+                print("stopped");
+                StartCoroutine(StopSignWait());
+            }
         }
         else
         {
-            
             ApplySteer();
             Drive();
             CheckWaypointDistance();
@@ -77,37 +81,29 @@ public class CarEngine : MonoBehaviour {
         RaycastHit hit;
         Vector3 sensorStartPos = transform.position + frontSensorPos;
 
-        //Front Center Sensor
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
-        {
-            Debug.DrawLine(sensorStartPos, hit.point, Color.yellow);
-            isBraking = true;
-            StartCoroutine(StopSignWait());
-            //wheelBL.motorTorque = 0;
-            //wheelBR.motorTorque = 0;
-        }
+            //Front Center Sensor
+            if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
+            {
+                Debug.DrawLine(sensorStartPos, hit.point, Color.yellow);
+                //StartCoroutine(StopSignWait());
+            }
 
-        //Front Right Sensor
-        sensorStartPos.x += frontSideSensorPos;
+            //Front Right Sensor
+            sensorStartPos.x += frontSideSensorPos;
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
-        {
-            Debug.DrawLine(sensorStartPos, hit.point, Color.red);
-            isBraking = true;
-            StartCoroutine(StopSignWait());
-            //wheelBL.motorTorque = 0;
-            //wheelBR.motorTorque = 0;
-        }
+            {
+                Debug.DrawLine(sensorStartPos, hit.point, Color.red);
+                //isBraking = true;
+            }
 
-        //Front Left Sensor
-        sensorStartPos.x -= 2* frontSideSensorPos;
+            //Front Left Sensor
+            sensorStartPos.x -= 2 * frontSideSensorPos;
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
-        {
-            Debug.DrawLine(sensorStartPos, hit.point, Color.green);
-            isBraking = true;
-            StartCoroutine(StopSignWait());
-            //wheelBL.motorTorque = 0;
-            //wheelBR.motorTorque = 0;
-        }
+            {
+                Debug.DrawLine(sensorStartPos, hit.point, Color.green);
+                //isBraking = true;
+            }
+        
     }
 
     private void ApplySteer()
@@ -120,7 +116,7 @@ public class CarEngine : MonoBehaviour {
 
     private void Drive()
     {
-        currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
+        currentSpeed = Mathf.Round( 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000);
 
         if (currentSpeed < maxSpeed && !isBraking)
         {
@@ -131,6 +127,8 @@ public class CarEngine : MonoBehaviour {
         {
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
+            wheelBL.brakeTorque = maxBrakeTorque;
+            wheelBR.brakeTorque = maxBrakeTorque;
         }
     }
 
@@ -152,9 +150,7 @@ public class CarEngine : MonoBehaviour {
 
     IEnumerator StopSignWait()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         isBraking = false;
-        wheelBL.brakeTorque = 0;
-        wheelBR.brakeTorque = 0;
     }
 }
