@@ -113,6 +113,76 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &34331029
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.685
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -30.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.00000035762784
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545508327489182, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_RootOrder
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 114646255002694704, guid: 015ebadc3a10e5e49afb8844b41c0363,
+        type: 2}
+      propertyPath: path
+      value: 
+      objectReference: {fileID: 579616117}
+    - target: {fileID: 114646255002694704, guid: 015ebadc3a10e5e49afb8844b41c0363,
+        type: 2}
+      propertyPath: startPath
+      value: 
+      objectReference: {fileID: 1929964303}
+    - target: {fileID: 114646255002694704, guid: 015ebadc3a10e5e49afb8844b41c0363,
+        type: 2}
+      propertyPath: stopSign
+      value: 
+      objectReference: {fileID: 1721777194}
+    - target: {fileID: 1883726998161402, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_Name
+      value: Car (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114646255002694704, guid: 015ebadc3a10e5e49afb8844b41c0363,
+        type: 2}
+      propertyPath: isBraking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1883726998161402, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &41611743
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +520,11 @@ Prefab:
       propertyPath: stopSign
       value: 
       objectReference: {fileID: 1721777194}
+    - target: {fileID: 114646255002694704, guid: 015ebadc3a10e5e49afb8844b41c0363,
+        type: 2}
+      propertyPath: isBraking
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 015ebadc3a10e5e49afb8844b41c0363, type: 2}
   m_IsPrefabParent: 0
@@ -1038,7 +1113,7 @@ GameObject:
   - component: {fileID: 1248835753}
   m_Layer: 0
   m_Name: CollisionCube
-  m_TagString: Untagged
+  m_TagString: BrakingZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1907,7 +1982,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4732982457816396, guid: 36c9eebdd2f14d54eb8ae540e678a288, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 35.25
+      value: 40.82
       objectReference: {fileID: 0}
     - target: {fileID: 4732982457816396, guid: 36c9eebdd2f14d54eb8ae540e678a288, type: 2}
       propertyPath: m_LocalPosition.y
