@@ -11,16 +11,19 @@ public class CarEngine : MonoBehaviour {
     public WheelCollider wheelFR;
     public WheelCollider wheelBL;
     public WheelCollider wheelBR;
+
     public float maxMotorTorque = 85;
     public float maxBrakeTorque = 200f;
     public float currentSpeed;
     public float maxSpeed = 100f;
-    public Collider stopSign;
+    //public Collider stopSign;
     public bool isBraking = false;
 
-    [Header("Sensors")]
-    private float sensorLength = 2f;
-    private Vector3 frontSensorPos = new Vector3(0.5f, 0.5f, 1f);
+    [Header("Spawn Points")]
+    public Transform spawnPos;
+
+    private float sensorLength = 8f;
+    private Vector3 frontSensorPos = new Vector3(-0.5f, 0.5f, 0f);
     private float frontSideSensorPos = 0.5f;
 
 
@@ -58,10 +61,14 @@ public class CarEngine : MonoBehaviour {
     private void FixedUpdate ()
     {
         Sensors();
+        if (transform.position.y <= -10)
+        {
+            ResetPostion();
+        }
 
         if (isBraking == true)
         {
-            Breaking();
+            Braking();
 
             if (Mathf.Round(wheelFR.rpm) == 0)
             {
@@ -80,7 +87,7 @@ public class CarEngine : MonoBehaviour {
         }
 	}
 
-    private void Breaking()
+    private void Braking()
     {
         if (isBraking == true)
         {
@@ -101,12 +108,14 @@ public class CarEngine : MonoBehaviour {
     private void Sensors()
     {
         RaycastHit hit;
-        Vector3 sensorStartPos = transform.position + frontSensorPos;
+        Transform sensorLeftPos = GetComponentInChildren<Transform>().transform.Find("FrontLeftSensor");
+        Transform sensorMidPos = GetComponentInChildren<Transform>().transform.Find("FrontMidSensor");
+        Transform sensorRightPos = GetComponentInChildren<Transform>().transform.Find("FrontRightSensor");
 
-            //Front Center Sensor
-            if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
+        //Front Center Sensor
+        if (Physics.Raycast(sensorMidPos.position, transform.forward, out hit, sensorLength) && !isBraking)
             {
-                Debug.DrawLine(sensorStartPos, hit.point, Color.yellow);
+                Debug.DrawLine(sensorMidPos.position, hit.point, Color.yellow);
                 if (hit.transform.tag == "BrakingZone")
                 {
                     print("hit");
@@ -118,18 +127,18 @@ public class CarEngine : MonoBehaviour {
             }
 
             //Front Right Sensor
-            sensorStartPos.x += frontSideSensorPos;
-            if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
+            //sensorLeftPos.x += frontSideSensorPos;
+            if (Physics.Raycast(sensorRightPos.position, transform.forward, out hit, sensorLength) && !isBraking)
             {
-                Debug.DrawLine(sensorStartPos, hit.point, Color.red);
+                Debug.DrawLine(sensorRightPos.position, hit.point, Color.red);
                 //isBraking = true;
             }
 
             //Front Left Sensor
-            sensorStartPos.x -= 2 * frontSideSensorPos;
-            if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength) && !isBraking)
+            //sensorStartPos.x -= 2 * frontSideSensorPos;
+            if (Physics.Raycast(sensorLeftPos.position, transform.forward, out hit, sensorLength) && !isBraking)
             {
-                Debug.DrawLine(sensorStartPos, hit.point, Color.green);
+                Debug.DrawLine(sensorLeftPos.position, hit.point, Color.green);
                 //isBraking = true;
             }
         
@@ -170,9 +179,35 @@ public class CarEngine : MonoBehaviour {
         }
     }
 
+    private void ResetPostion()
+    {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
+        
+        correctNode = 0;
+
+        if (startPath.name == "Path_A")
+        {
+            transform.position = spawnPos.position;
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        }
+
+        if (startPath.name == "Path_B")
+        {
+            transform.position = spawnPos.position;
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+        }
+
+        if (startPath.name == "Path_C")
+        {
+            transform.position = spawnPos.position;
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+        }
+    }
+
     IEnumerator StopSignWait()
     {
         yield return new WaitForSeconds(3);
-        Breaking();
+        Braking();
     }
 }
