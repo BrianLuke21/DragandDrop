@@ -72,15 +72,15 @@ public class CarEngine : MonoBehaviour {
 
             if (Mathf.Round(wheelFR.rpm) == 0)
             {
-                print("stopped");
+                //print("stopped");
                 StartCoroutine(StopSignWait());
                 isBraking = false;
-                print("start driving");
+                //print("start driving");
             }
         }
         else
         {
-            print(wheelBL.brakeTorque);
+            //print(wheelBL.brakeTorque);
             ApplySteer();
             Drive();
             CheckWaypointDistance();
@@ -118,7 +118,7 @@ public class CarEngine : MonoBehaviour {
                 Debug.DrawLine(sensorMidPos.position, hit.point, Color.yellow);
                 if (hit.transform.tag == "BrakingZone")
                 {
-                    print("hit");
+                    //print("hit");
                 }
                 else
                 {
