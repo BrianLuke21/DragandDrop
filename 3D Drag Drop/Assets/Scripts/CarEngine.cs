@@ -23,8 +23,8 @@ public class CarEngine : MonoBehaviour {
     public Transform spawnPos;
 
     private float sensorLength = 8f;
-    private Vector3 frontSensorPos = new Vector3(-0.5f, 0.5f, 0f);
-    private float frontSideSensorPos = 0.5f;
+    //private Vector3 frontSensorPos = new Vector3(-0.5f, 0.5f, 0f);
+    //private float frontSideSensorPos = 0.5f;
 
 
     private List<Transform> nodes;
@@ -61,10 +61,6 @@ public class CarEngine : MonoBehaviour {
     private void FixedUpdate ()
     {
         Sensors();
-        if (transform.position.y <= -10)
-        {
-            ResetPostion();
-        }
 
         if (isBraking == true)
         {
@@ -176,32 +172,6 @@ public class CarEngine : MonoBehaviour {
                 correctNode++;
             }
 
-        }
-    }
-
-    private void ResetPostion()
-    {
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
-        
-        correctNode = 0;
-
-        if (startPath.name == "Path_A")
-        {
-            transform.position = spawnPos.position;
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-        }
-
-        if (startPath.name == "Path_B")
-        {
-            transform.position = spawnPos.position;
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
-        }
-
-        if (startPath.name == "Path_C")
-        {
-            transform.position = spawnPos.position;
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
         }
     }
 
